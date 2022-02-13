@@ -38,6 +38,7 @@ exports.sendNotification = async(req, res) => {
     !body ||
     !sentBy) return res.status(422).json({message: 'Unable to send notification'})
 
+    console.log(process.env.PUBLICKEY)
   const options = {
     vapidDetails: {
       subject: 'mailto:sample@gmail.com',
