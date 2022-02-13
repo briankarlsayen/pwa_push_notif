@@ -30,7 +30,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
   navigator.serviceWorker.register('sw.js')
   .then(function(swReg) {
-    console.log('Service Worker is registered', swReg);
+    console.log('Service Worker is registered');
 
     swRegistration = swReg;
     initializeUI();
@@ -135,7 +135,6 @@ const unsubscribeUser = async() => {
         }
       });
       const content = await rawResponse.json();
-      console.log(content)
       localStorage.clear()
       return subscription.unsubscribe();
     }
@@ -170,5 +169,4 @@ const sendSubscription = async(subscription) => {
     subscriptionKey: content.result.subscriptionKey
   }
   localStorage.setItem("push-info", JSON.stringify(data))
-  console.log(JSON.stringify(data));
 }

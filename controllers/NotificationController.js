@@ -38,7 +38,6 @@ exports.sendNotification = async(req, res) => {
     !body ||
     !sentBy) return res.status(422).json({message: 'Unable to send notification'})
 
-    console.log(process.env.PUBLICKEY)
   const options = {
     vapidDetails: {
       subject: 'mailto:sample@gmail.com',
@@ -99,17 +98,17 @@ exports.sendNotification = async(req, res) => {
         .then((result) => {
           let newSubscriptionId = subscription._id.toString()
           idsSent.push(newSubscriptionId)
-          console.log(`Sent successfully to id: ${subscription._id}`)
+          // console.log(`Sent successfully to id: ${subscription._id}`)
         })
         .catch((err) => {
           if (err.statusCode === 404 || err.statusCode === 410) {
             idsNotSent.push(subscription._id)
-            console.log('Subscription has expired or is no longer valid: ', err);
+            // console.log('Subscription has expired or is no longer valid: ', err);
             //archive subs
             return deleteSubscription(subscription._id);
           } else {
             idsNotSent.push(subscription._id)
-            console.log(`Unable to send notification to id: ${subscription._id}`)
+            // console.log(`Unable to send notification to id: ${subscription._id}`)
             return deleteSubscription(subscription._id);
           }
         })
