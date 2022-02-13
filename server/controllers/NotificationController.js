@@ -1,8 +1,8 @@
-
 const mongoose = require('mongoose')
 const Notification = require("../models/Notification");
 const Subscription = require("../models/Subscription");
 const webpush = require('web-push');
+require("dotenv").config();
 
 const displayAllSubscription = () => {
   return Subscription.aggregate([
@@ -38,18 +38,12 @@ exports.sendNotification = async(req, res) => {
     !body ||
     !sentBy) return res.status(422).json({message: 'Unable to send notification'})
 
-
-  const vapidKeys = {
-    publicKey: 'BMsFhyOx-CYwyDhQcQTw-vuWr3uco4SzQFc_0SbxC-8Gvs61cGKeKXbKOigSC8-vRnPdu0pMVtb08Wfs9EftrmM',
-    privateKey: 'i5Jgws6Z8oV1_qhSxgC0fqiUkiLAQ0AELLhYFyJvK_4'
-  }
-
   const options = {
     // gcmAPIKey: '< GCM API Key >',
     vapidDetails: {
       subject: 'mailto:sample@gmail.com',
-      publicKey: vapidKeys.publicKey,
-      privateKey:  vapidKeys.privateKey,
+      publicKey: process.env.publicKey,
+      privateKey:  process.env.privateKey,
     },
     timeout: 10000,
     // proxy: 'http://127.0.0.1:5500/push-notifications/app/'
