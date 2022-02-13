@@ -28,4 +28,9 @@ app.use(
   notificationRoutes
 )
 
+app.get('/', (req, res) => {
+  console.log('Server online!')
+  res.status(200).send('Server online!')
+})
+
 app.listen(PORT, () => console.log(`listening to port ${PORT}`))

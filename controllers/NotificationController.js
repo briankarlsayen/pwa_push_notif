@@ -39,14 +39,12 @@ exports.sendNotification = async(req, res) => {
     !sentBy) return res.status(422).json({message: 'Unable to send notification'})
 
   const options = {
-    // gcmAPIKey: '< GCM API Key >',
     vapidDetails: {
       subject: 'mailto:sample@gmail.com',
-      publicKey: process.env.publicKey,
-      privateKey:  process.env.privateKey,
+      publicKey: process.env.PUBLICKEY,
+      privateKey:  process.env.PRIVATEKEY,
     },
     timeout: 10000,
-    // proxy: 'http://127.0.0.1:5500/push-notifications/app/'
   }
 
   const subscriptions = await displayAllSubscription()

@@ -1,6 +1,8 @@
 'use strict';
-
 const applicationServerPublicKey = 'BMsFhyOx-CYwyDhQcQTw-vuWr3uco4SzQFc_0SbxC-8Gvs61cGKeKXbKOigSC8-vRnPdu0pMVtb08Wfs9EftrmM';
+
+// const baseURL = 'http://localhost:5006'
+const baseURL = 'https://push-notif-v1.herokuapp.com'
 
 const pushButton = document.querySelector('.js-push-btn');
 
@@ -124,7 +126,7 @@ const unsubscribeUser = async() => {
   .then(async(subscription) => {
     if (subscription) {
       const userId = JSON.parse(localStorage.getItem('push-info'))
-      const server = `http://localhost:5006/archivesubscription/${userId._id}`
+      const server = `${baseURL}/archivesubscription/${userId._id}`
       const rawResponse = await fetch(server, {
         method: 'PUT',
         headers: {
@@ -152,7 +154,7 @@ const unsubscribeUser = async() => {
 }
 
 const sendSubscription = async(subscription) => {
-  const server = 'http://localhost:5006/createsubscription'
+  const server = `${baseURL}/createsubscription`
   const rawResponse = await fetch(server, {
     method: 'POST',
     headers: {
