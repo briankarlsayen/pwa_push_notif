@@ -9,7 +9,6 @@ self.addEventListener('push', function(event) {
     body: parsedData.body,
     icon: 'image/yin-yang.png',
     badge: 'image/yin-yang.png'
-    // image: 'image/batman.png',
   };
 
   event.waitUntil(self.registration.showNotification(title, options));

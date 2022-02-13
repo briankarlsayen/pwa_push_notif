@@ -92,7 +92,8 @@ function subscribeUser() {
   })
   .then(function(subscription) {
     console.log('User is subscribed.');
-
+    //subscribe user
+    sendSubscription(subscription)
     updateSubscriptionOnServer(subscription);
 
     isSubscribed = true;
@@ -113,12 +114,8 @@ function updateSubscriptionOnServer(subscription) {
   if (subscription) {
     subscriptionJson.textContent = JSON.stringify(subscription);
     subscriptionDetails.classList.remove('is-invisible');
-    //subscribe user
-    sendSubscription(subscription)
-
   } else {
     subscriptionDetails.classList.add('is-invisible');
-
   }
 }
 
