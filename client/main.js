@@ -63,7 +63,6 @@ function initializeUI() {
     } else {
       console.log('User is NOT subscribed.');
     }
-
     updateBtn();
   });
 }
@@ -107,16 +106,6 @@ function subscribeUser() {
 }
 
 function updateSubscriptionOnServer(subscription) {
-  // TODO: Send subscription to application server
-  
-  //send this to serverDB ---->
-  // const subscriptionKeys = JSON.parse(JSON.stringify(subscription))
-  // const endpoint = subscriptionKeys.endpoint
-  // const p256dh = subscriptionKeys.keys.p256dh
-  // const auth = subscriptionKeys.keys.auth
-  // const expTime = subscriptionKeys.expirationTime
-  ///<-----------------
-  // console.log(JSON.stringify({data: subscription}))
   const subscriptionJson = document.querySelector('.js-subscription-json');
   const subscriptionDetails =
     document.querySelector('.js-subscription-details');
@@ -124,19 +113,31 @@ function updateSubscriptionOnServer(subscription) {
   if (subscription) {
     subscriptionJson.textContent = JSON.stringify(subscription);
     subscriptionDetails.classList.remove('is-invisible');
-
-    //put here
-    // sendSubscription(subs)
+    //subscribe user
+    sendSubscription(subscription)
 
   } else {
     subscriptionDetails.classList.add('is-invisible');
+
   }
 }
 
-function unsubscribeUser() {
+const unsubscribeUser = async() => {
   swRegistration.pushManager.getSubscription()
-  .then(function(subscription) {
+  .then(async(subscription) => {
     if (subscription) {
+      const userId = JSON.parse(localStorage.getItem('push-info'))
+      const server = `http://localhost:5006/archivesubscription/${userId._id}`
+      const rawResponse = await fetch(server, {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+      const content = await rawResponse.json();
+      console.log(content)
+      localStorage.clear()
       return subscription.unsubscribe();
     }
   })
@@ -154,18 +155,21 @@ function unsubscribeUser() {
 }
 
 const sendSubscription = async(subscription) => {
-  // const sendData = {data: subscription}
-  // console.log(sendData)
-  const server = 'http://localhost:5006/subscription'
+  const server = 'http://localhost:5006/createsubscription'
   const rawResponse = await fetch(server, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({data:subscription})
+    body: JSON.stringify({subscriptionKey:subscription})
   });
   const content = await rawResponse.json();
 
-  console.log(content);
+  const data = {
+    _id: content.result._id,
+    subscriptionKey: content.result.subscriptionKey
+  }
+  localStorage.setItem("push-info", JSON.stringify(data))
+  console.log(JSON.stringify(data));
 }
